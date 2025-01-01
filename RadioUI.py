@@ -48,13 +48,15 @@ class RadioUI:
         self.running_ = tk.BooleanVar(value=True)
         self.functions_ = RadioUI.run_functions
         self.create_layout()
-        
+        self.window.bind('`', func= self.toggle_stereo)
+        self.window.bind('~', func= self.toggle_stereo)
+
     def get_window(self):
         return self.window
     
     def create_layout(self):
         #inputs
-        input_fame = ttk.Frame()
+        input_fame = ttk.Frame(self.window)
         input_fame.grid(column=0, padx=3, pady=10)
         self.inputs = []
         for element in RadioUI.contest_msg:
@@ -66,13 +68,13 @@ class RadioUI:
             self.inputs.append(entry)
         
         #Status
-        status_frame = ttk.Frame()
+        status_frame = ttk.Frame(self.window)
         status_frame.grid(row=1, column=0, padx=3, pady=10)
         ttk.Radiobutton(status_frame, value=True, variable=self.running_, text="Run", command=self.update_state).grid(row=0, column=0, padx=5, pady=5)
         ttk.Radiobutton(status_frame, value=False, variable=self.running_, text="S&P", command=self.update_state).grid(row=0, column=1, padx=5, pady=5)
 
         # Functions
-        func_frame = ttk.Frame()
+        func_frame = ttk.Frame(self.window)
         func_frame.grid(row=2, column=0, padx=3, pady=10)
         self.fbuttons_=[]
         for el in RadioUI.run_functions:
@@ -123,6 +125,9 @@ class RadioUI:
                 line = line.replace('{' + macro + '}', '')
         line = line.replace('*', RadioUI.macros_["MYCALL"])
         return line
+
+    def toggle_stereo(self, event):
+        print("Stereo")
 
 if __name__ =='__main__':
     r = RadioUI(title="Radio 1", contest="ARRL10")
